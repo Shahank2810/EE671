@@ -1,0 +1,29 @@
+* NGSPICE file created from buffer.ext - technology: sky130A
+
+.subckt Inv Vdd Vss a Y
+X0 Y a Vdd Vdd sky130_fd_pr__nfet_01v8 ad=0.126 pd=1.44 as=0.126 ps=1.44 w=0.42 l=0.15
+**devattr s=1260,144 d=1260,144
+X1 Y a Vss Vss sky130_fd_pr__pfet_01v8 ad=0.219 pd=2.06 as=0.219 ps=2.06 w=0.73 l=0.15
+**devattr s=2190,206 d=2190,206
+C0 a Vss 0.111082f
+C1 a Y 0.037688f
+C2 Y Vss 0.146827f
+C3 Y Vdd 0.289702f
+C4 a Vdd 0.332451f
+C5 Vss Vdd 0.490692f
+.ends
+
+.subckt buffer Vss Vdd A Y
+XInv_0 Vss Vdd A Inv_1/a Inv
+XInv_1 Vss Vdd Inv_1/a Y Inv
+C0 Y Vdd 0.001356f
+C1 Inv_1/a Vdd 0.077317f
+C2 A Inv_1/a 0.011691f
+C3 A Vdd 0.007845f
+C4 Y Inv_1/a 0.011781f
+C5 Y Vss 0.273618f
+C6 Vdd Vss 0.989391f
+C7 Inv_1/a Vss 0.510808f
+C8 A Vss 0.314548f
+.ends
+
