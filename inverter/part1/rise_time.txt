@@ -1,0 +1,3 @@
+trise               =  31.12ps
+tfall               =  30.50ps
+tpd_high            =  83.56ps
