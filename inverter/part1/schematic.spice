@@ -1,0 +1,41 @@
+* Schematic SPICE file for inverter circuit
+
+* Include the model library
+.lib /home/sappylappy/Desktop/DESKTOP/SOFTWARE/new_pdk_sky/open_pdks/sources/sky130_fd_pr/combined_models/sky130.lib.spice tt
+
+* Define voltage sources
+Vdd vdd gnd DC 1.8
+V1 in gnd DC 0  ; Initialize DC sweep source
+
+* Inverter subcircuit
+Xnot1 in vdd gnd out not1
+
+* Subcircuit definition for inverter
+.subckt not1 A Vdd Vss Y
+xm01 Y A Vdd Vdd sky130_fd_pr__pfet_01v8 l=0.15 w=0.75 as=0.225 ad=0.225 ps=2.1 pd=2.1
+xm02 Y A Vss Vss sky130_fd_pr__nfet_01v8 l=0.15 w=0.42 as=0.126 ad=0.126 ps=1.44 pd=1.44
+.ends
+
+* Simulation commands
+.dc V1 0 1.8 0.1
+
+.control
+run
+
+* Measure points for inverter operation
+.measure dc VIH FIND V(in) AT V(out)=1.62*Vdd
+.measure dc VIL FIND V(in) AT V(out)=0.18*Vdd
+.measure dc VM FIND V(in) AT V(out)=0.9*Vdd
+
+* Calculate Noise Margins
+.measure dc NMH PARAM='VIH - V(in) when V(out) is high (near Vdd)'
+.measure dc NML PARAM='VIL - V(in) when V(out) is low (near GND)'
+
+* Output results
+.print dc VIH VIL VM NMH NML
+
+* Plot results for visualization
+plot v(in) v(out)
+.endc
+.end
+

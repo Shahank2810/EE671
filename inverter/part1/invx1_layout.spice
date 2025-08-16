@@ -1,0 +1,9 @@
+* NGSPICE file created from invx1.ext - technology: sky130A
+
+.subckt invx1 Vdd Y A Vss
+X0 Y A Vss Vss sky130_fd_pr__nfet_01v8 ad=0.126 pd=1.44 as=0.126 ps=1.44 w=0.42 l=0.15
+**devattr s=1260,144 d=1260,144
+X1 Y A Vdd Vdd sky130_fd_pr__pfet_01v8 ad=0.225 pd=2.1 as=0.225 ps=2.1 w=0.75 l=0.15
+**devattr s=2250,210 d=2250,210
+.ends
+
