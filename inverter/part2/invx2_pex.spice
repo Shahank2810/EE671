@@ -1,0 +1,54 @@
+* NGSPICE file created from invx2.ext - technology: sky130A
+* NGSPICE file created for inverter transient simulation
+.lib /home/sappylappy/Desktop/DESKTOP/SOFTWARE/new_pdk_sky/open_pdks/sources/sky130_fd_pr/combined_models/sky130.lib.spice tt
+
+.subckt invx2 Vdd Y A Vss
+X0 Y A Vdd Vdd sky130_fd_pr__pfet_01v8 ad=0.45 pd=3.6 as=0.45 ps=3.6 w=1.5 l=0.15
+**devattr s=4500,360 d=4500,360
+X1 Y A Vss Vss sky130_fd_pr__nfet_01v8 ad=0.252 pd=2.28 as=0.252 ps=2.28 w=0.84 l=0.15
+**devattr s=2520,228 d=2520,228
+C0 A Y 0.042402f
+C1 A Vdd 0.057737f
+C2 Y Vdd 0.165165f
+C3 Y Vss 0.29375f
+C4 A Vss 0.404871f
+C5 Vdd Vss 0.648733f
+.ends
+
+* Instantiate the inverter
+Xinv1 Vdd Out In Vss invx2
+
+* Voltage supply
+Vdd Vdd 0 1.8
+Vss Vss 0 0
+
+* Input signal: square wave 0 to 1.8V, period of 10ns
+
+Vin In 0 pulse(0 1.8 0p 200p 100p 1n 2n)
+
+* Transient analysis
+.tran 1ps 10ns 0 10p
+
+* Control section to execute commands and plot the output
+.control
+  run
+  plot v(In) v(Out)
+.endc
+
+* Control statements to measure rise time, fall time, and propagation delay
+.measure tran trise TRIG v(In) VAL=0.9 TD=0 RISE=1
++ TARG v(Out) VAL=0.9 FALL=1
+
+.measure tran tfall TRIG v(In) VAL=0.9 TD=0 FALL=1
++ TARG v(Out) VAL=0.9 RISE=1
+
+* Measure high-to-low propagation delay
+.measure tran tpd_high TRIG v(In) VAL=0.5 TD=0 RISE=1 TARG v(Out) VAL=0.5 FALL=1
+
+* Measure low-to-high propagation delay
+.measure tran tpd_low TRIG v(In) VAL=0.5 TD=0 FALL=1 TARG v(Out) VAL=0.5 RISE=1
+
+
+* End of file
+.end
+
